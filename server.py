@@ -13,7 +13,7 @@ Routes tasks using CPU-only sentence-transformer embeddings + cosine similarity
 against an example bank in SQLite.
 
 Package lives at:
-  /home/ziggibot/swiszard/swiszard/
+  <package install path>
 """
 from __future__ import annotations
 

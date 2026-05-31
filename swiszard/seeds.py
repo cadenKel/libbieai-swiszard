@@ -38,8 +38,8 @@ SEED_EXAMPLES: list[tuple[str, str]] = [
     # ── handler_memory ───────────────────────────────────────────────────────
     ("memory recall what do you know about python preferences", "handler_memory"),
     ("memory recall recent decisions about the swiszard", "handler_memory"),
-    ("memory recall Sean's preferences", "handler_memory"),
-    ("remember that Sean prefers tabs over spaces", "handler_memory"),
+    ("memory recall user preferences", "handler_memory"),
+    ("remember that the user prefers tabs over spaces", "handler_memory"),
     ("remember this: always use black for formatting", "handler_memory"),
     ("memory forget id 42", "handler_memory"),
     ("memory status how many memories are stored", "handler_memory"),

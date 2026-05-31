@@ -377,7 +377,7 @@ def handler_memory(task: str) -> str:
             "session_id":  "user_explicit",
             "turn":        -1,
             "source":      "user_explicit",
-            "tags":        ["caden_self"],
+            "tags":        ["self"],
             "ttl_seconds": None,
         })
         if result and "memory_id" in result:
@@ -402,7 +402,7 @@ def handler_memory(task: str) -> str:
         if "--include-deprecated" in rest or "--all" in rest:
             include_dep = True
         if not (tag or source):
-            tag = "caden_self"  # default browse target = my own notes
+            tag = "self"  # default browse target = my own notes
         result = _mem_post("/list", {
             "tag": tag, "source": source,
             "include_deprecated": include_dep,
