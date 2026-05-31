@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "libbieai-swiszard"
+version = "0.1.0"
+description = "Deterministic tool router + local semantic memory server for LLM agents. No LLM in the hot path."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "LibbieAI"}]
+keywords = ["llm", "agent", "mcp", "tools", "memory", "local-first", "deterministic"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+    "numpy>=1.24",
+    "sentence-transformers>=2.2",
+]
+
+[project.optional-dependencies]
+mcp = ["mcp>=0.9.0"]
+memory = ["fastapi>=0.110", "uvicorn>=0.27", "pydantic>=2.0"]
+all = ["mcp>=0.9.0", "fastapi>=0.110", "uvicorn>=0.27", "pydantic>=2.0"]
+
+[project.scripts]
+swiszard-mcp = "swiszard.cli:run_mcp_server"
+swiszard-memory = "memory_server.__main__:main"
+
+[project.urls]
+Homepage = "https://liljarv.dev"
+Source = "https://github.com/cadenKel/libbieai-swiszard"
+Issues = "https://github.com/cadenKel/libbieai-swiszard/issues"
+
+[tool.setuptools.packages.find]
+include = ["swiszard*", "memory_server*"]
+exclude = ["tests*", ".venv*"]
