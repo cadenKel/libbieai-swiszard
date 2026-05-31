@@ -1,26 +1,55 @@
 # libbieai-swiszard
 
-**Deterministic tool routing + local semantic memory for LLM agents.**
-No LLM in the hot path. Pattern-match dispatch, local SQLite, local embeddings.
+**Ergonomic handles for your LLM. Deterministic tool routing + local semantic memory.**
+Free and MIT. No LLM in the hot path. Local SQLite, local embeddings, zero phone-home.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Tokens saved](https://img.shields.io/badge/tokens_saved-68%25-brightgreen)](BENCHMARKS.md)
+[![Status: Beta](https://img.shields.io/badge/status-beta-yellow.svg)](.)
+[![AI-generated](https://img.shields.io/badge/code-AI--generated_human--orchestrated-orange.svg)](#a-note-on-how-this-was-built)
 [![tests](https://img.shields.io/badge/tests-14%2F14_passing-brightgreen)](.)
 
-> **68% token savings** on real git log/show/diff/status workflows against a real Flask checkout, tiktoken cl100k_base. See [BENCHMARKS.md](BENCHMARKS.md) and reproduce in 60 seconds.
+> Most agent tooling treats the LLM as infinitely capable (cram more context, more tools, more retries) and treats you as someone who can be trained to live with bad UX. swiszard flips both: the LLM gets ergonomic handles (one tool slot, deterministic dispatch, proactive memory), and so do you (one install, plain-English commands, no DSL to learn).
 
 ---
 
-## Why
+## What it does
 
-Most agent frameworks route every action through the LLM. That wastes tokens, adds latency, and makes the agent feel sluggish. swiszard flips it: the LLM *chooses what to do*, and a deterministic router *does it*.
+- **One MCP tool slot** instead of 10+ for the common ops. Drops into Claude Desktop, Cursor, Continue, Cline, Hermes, or anything else that speaks MCP.
+- **Zero LLM calls at dispatch.** Regex + TF-IDF + a tiny on-disk embedding bank decide where your task goes.
+- **Local-first memory.** SQLite + nomic-embed-text (Ollama), all on your machine.
+- **Proactive recall.** Memories auto-inject when the current situation embedding matches a stored trigger -- no query needed.
+- **Pinnable facts.** Pin a memory and it injects every turn, like a sticky note on the LLM monitor.
 
-- **One MCP tool slot** instead of 10+ for the common ops (file read, find, grep, shell, web, memory).
-- **Zero LLM calls** at dispatch time. Regex + TF-IDF + a tiny on-disk embedding bank.
-- **Local-first memory**: SQLite + nomic-embed-text (Ollama), all on your box.
-- **Token-thrifty**: session-scoped file dedup, recall-result truncation, preview-on-repeat-read.
+## Benchmarks (honest)
 
-If you are running a local LLM on consumer hardware and watching every token, this is the kind of plumbing that pays for itself in the first 50 turns.
+On read-heavy git inspection operations against a real Flask checkout (tiktoken cl100k_base):
+
+| Scenario              | Raw git tokens | swiszard tokens | Savings |
+|-----------------------|---------------:|----------------:|--------:|
+| log inspection (-30)  | ~4,000         | ~880            | **78%** |
+| diff + blame combo    | ~2,500         | ~720            | **71%** |
+| status on dirty tree  | ~1,200         | ~590            | **51%** |
+| repo overview         | ~260           | ~390            | **net loss** (raw is already tiny) |
+
+Average across the four: **~68% smaller payloads on the scenarios where it matters; a small loss on trivial calls.** The real win for your wallet comes when these compressed payloads also eliminate retry loops and turn-count, not just per-call bytes. See [BENCHMARKS.md](BENCHMARKS.md) for the script -- reproduce in 60 seconds.
+
+---
+
+## A note on how this was built
+
+**All code in this repository is AI-generated and human-orchestrated by a biologist, not a career software engineer.** The architecture, the product decisions, the engineering taste, and every line of review come from a human; the typing comes from an LLM agent. We think this is a feature -- the result is unusually composable and explicit -- but it also means we genuinely need your eyes on it.
+
+**If you find a security issue, dependency vulnerability, malware-like behavior, supply-chain concern, or anything sketchy:** open an issue with the security label, or email security@libbie.ai. We will respond fast and credit you in the changelog. Please be loud about it. Quiet bugs are how people get hurt and we are committed to never being the reason that happens.
+
+We are also actively soliciting:
+
+- Code review on the router (swiszard/handlers.py) and the memory server (memory_server/app.py)
+- Have-you-tried-X feedback from people running this against real agent workloads
+- PRs that make installs safer, the threat model clearer, or the tests harsher
+
+If you want to help and you are not sure where to start, open a discussion. We are happy to point you at something useful.
+
+---
 
 ## What is in the box
 
