@@ -4,6 +4,10 @@
 No LLM in the hot path. Pattern-match dispatch, local SQLite, local embeddings.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Tokens saved](https://img.shields.io/badge/tokens_saved-68%25-brightgreen)](BENCHMARKS.md)
+[![tests](https://img.shields.io/badge/tests-14%2F14_passing-brightgreen)](.)
+
+> **68% token savings** on real git log/show/diff/status workflows against a real Flask checkout, tiktoken cl100k_base. See [BENCHMARKS.md](BENCHMARKS.md) and reproduce in 60 seconds.
 
 ---
 
